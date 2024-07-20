@@ -1,3 +1,14 @@
+# Preview
+![main_interface2](https://github.com/user-attachments/assets/46c9e3c6-bd6e-46ca-bec7-aeee1208517a)
+## Options
+![remove_widget](https://github.com/user-attachments/assets/7f0512e2-2b19-4fd3-b35c-5c008c959f75)
+![filter_widget](https://github.com/user-attachments/assets/1e1cc07b-0e01-4a28-9144-683255350b9c)
+![edit_widget](https://github.com/user-attachments/assets/db7d2ea2-bb6b-4779-8cf2-367581d23282)
+![check_duplicate_widget](https://github.com/user-attachments/assets/1ffd680c-6962-481e-8f2e-f41523363ee5)
+![sort_data_widget](https://github.com/user-attachments/assets/158e304e-b973-4919-954a-2df562b1c8ec)
+![rename_widget](https://github.com/user-attachments/assets/33eac867-b97e-47ce-9892-7123a6b9b1f8)
+
+
 # CSV Management Tool
 
 ## Description
