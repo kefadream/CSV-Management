@@ -17,8 +17,8 @@ class ActionsFrame(tk.LabelFrame):
 
 class DataManagementFrame(tk.LabelFrame):
     def __init__(self, parent, delete_icon, filter_icon, edit_icon, check_duplicates_icon, sort_icon,
-                 rename_icon, remove_columns_callback, filter_data_callback, edit_data_callback,
-                 check_duplicates_callback, sort_data_callback, rename_columns_callback):
+                 rename_icon, remove_duplicates, remove_columns_callback, filter_data_callback, edit_data_callback,
+                 check_duplicates_callback, sort_data_callback, rename_columns_callback, impute_data_callback):
         super().__init__(parent, text="Data Management Options", padx=10, pady=10)
 
         delete_button = tk.Button(self, image=delete_icon, command=remove_columns_callback)
@@ -44,6 +44,10 @@ class DataManagementFrame(tk.LabelFrame):
         rename_button = tk.Button(self, image=rename_icon, command=rename_columns_callback)
         rename_button.pack(side="left", padx=5, pady=5)
         Tooltip(rename_button, "Rename Columns")
+
+        impute_button = tk.Button(self, image=remove_duplicates, command=impute_data_callback)
+        impute_button.pack(side="left", padx=5, pady=5)
+        Tooltip(impute_button, "Impute data")
 
 
 class ExportOptionsFrame(tk.LabelFrame):

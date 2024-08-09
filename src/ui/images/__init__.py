@@ -11,7 +11,8 @@ IMAGE_PATHS = {
     "edit": "src/ui/images/edit.png",
     "check_duplicates": "src/ui/images/check_duplicates.png",
     "sort": "src/ui/images/sort.png",
-    "rename": "src/ui/images/rename.png"
+    "rename": "src/ui/images/rename.png",
+    "remove_duplicates": "src/ui/images/remove_duplicates.png"
 }
 
 

@@ -39,14 +39,18 @@ class CSVApp:
         main_frame.grid_columnconfigure(1, weight=1)
 
         # Cadre des actions
-        action_frame = ActionsFrame(main_frame, self.image_loader.get_image("select"), self.image_loader.get_image("process"), self.select_files, self.process_csv_files)
+        action_frame = ActionsFrame(main_frame, self.image_loader.get_image("select"),
+                                    self.image_loader.get_image("process"), self.select_files, self.process_csv_files)
         action_frame.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
 
         # Cadre pour les options de gestion des données
-        manage_frame = DataManagementFrame(main_frame, self.image_loader.get_image("delete"), self.image_loader.get_image("filter"), self.image_loader.get_image("edit"),
-                                           self.image_loader.get_image("check_duplicates"), self.image_loader.get_image("sort"), self.image_loader.get_image("rename"),
+        manage_frame = DataManagementFrame(main_frame, self.image_loader.get_image("delete"),
+                                           self.image_loader.get_image("filter"), self.image_loader.get_image("edit"),
+                                           self.image_loader.get_image("check_duplicates"),
+                                           self.image_loader.get_image("sort"), self.image_loader.get_image("rename"),
+                                           self.image_loader.get_image("remove_duplicates"),
                                            self.remove_columns, self.filter_data, self.edit_data,
-                                           self.check_duplicates, self.sort_data, self.rename_columns)
+                                           self.check_duplicates, self.sort_data, self.rename_columns, self.impute_data)
         manage_frame.grid(row=0, column=1, sticky="ew", padx=10, pady=10)
 
         # Cadre pour afficher les informations sur les fichiers CSV
@@ -87,7 +91,8 @@ class CSVApp:
     def select_files(self):
         self.files = filedialog.askopenfilenames(title="Select CSV Files", filetypes=[("CSV Files", "*.csv")])
         if self.files:
-            self.log_message(f"Selected {len(self.files)} files: {', '.join(os.path.basename(file) for file in self.files)}")
+            self.log_message(
+                f"Selected {len(self.files)} files: {', '.join(os.path.basename(file) for file in self.files)}")
 
     def display_csv_info(self, info):
         self.info_text.delete("1.0", tk.END)
@@ -271,7 +276,6 @@ class CSVApp:
                 messagebox.showinfo("Success", "Duplicates removed successfully.")
                 self.log_message("Duplicates removed successfully.")
 
-
     def sort_data(self):
         if self.dataframe is None:
             messagebox.showerror("Error", "No data available to sort.")
@@ -302,6 +306,23 @@ class CSVApp:
             self.display_csv_info(self.dataframe.to_string())
             messagebox.showinfo("Success", "Columns renamed successfully.")
             self.log_message(f"Columns renamed successfully: {columns_map}")
+
+    def impute_data(self):
+        if self.dataframe is None:
+            messagebox.showerror("Error", "No data available to modify.")
+            self.log_message("Error: No data available to modify.")
+            return
+
+        manager = DataManager(self.dataframe)
+
+        self.log_message(f"Number of NAN values before imputation {self.dataframe.isna().sum().sum()}")
+        self.dataframe = manager.impute_missing_data()
+        self.log_message(f"Number of NAN values after imputation {self.dataframe.isna().sum().sum()}")
+
+        self.display_csv_info(self.dataframe.to_string())
+        messagebox.showinfo("Success", "Missing data imputed successfully.")
+        self.log_message("Missing data imputed successfully.")
+
 
 # Exemple d'utilisation
 if __name__ == "__main__":

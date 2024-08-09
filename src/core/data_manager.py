@@ -16,6 +16,7 @@ class DataManager:
         remove_duplicates(): Supprime les doublons du dataframe.
         merge_dataframes(dataframes): Fusionne une liste de dataframes.
     """
+
     def __init__(self, dataframe):
         """
         Initialise le DataManager avec le dataframe.
@@ -119,3 +120,16 @@ class DataManager:
         except Exception as e:
             logger.error(f"Error merging dataframes: {e}")
             return None
+
+    def impute_missing_data(self):
+        """
+        1: Drop les lignes d'un dataframe qui ont seulement des NaN.
+        2: Foward Fill
+        3: backward Fill
+
+        """
+        self.dataframe.dropna(axis=0, how='all', inplace=True)
+        self.dataframe.ffill(inplace=True)
+        self.dataframe.bfill(inplace=True)
+
+        return self.dataframe
