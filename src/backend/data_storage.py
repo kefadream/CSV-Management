@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from config import logger, CONFIG
+from .config import logger, CONFIG
 
 class DataStorage:
     def store_data(self, data, file_name=None):

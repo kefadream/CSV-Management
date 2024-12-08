@@ -2,17 +2,17 @@ import tkinter as tk
 
 # Définition des chemins des images
 IMAGE_PATHS = {
-    "browse": "src/ui/images/browse.png",
-    "save": "src/ui/images/save.png",
-    "select": "src/ui/images/select.png",
-    "process": "src/ui/images/process.png",
-    "delete": "src/ui/images/delete.png",
-    "filter": "src/ui/images/filter.png",
-    "edit": "src/ui/images/edit.png",
-    "check_duplicates": "src/ui/images/check_duplicates.png",
-    "sort": "src/ui/images/sort.png",
-    "rename": "src/ui/images/rename.png",
-    "remove_duplicates": "src/ui/images/remove_duplicates.png"
+    "browse": "data/images/browse.png",
+    "save": "data/images/save.png",
+    "select": "data/images/select.png",
+    "process": "data/images/process.png",
+    "delete": "data/images/delete.png",
+    "filter": "data/images/filter.png",
+    "edit": "data/images/edit.png",
+    "check_duplicates": "data/images/check_duplicates.png",
+    "sort": "data/images/sort.png",
+    "rename": "data/images/rename.png",
+    "remove_duplicates": "data/images/remove_duplicates.png"
 }
 
 

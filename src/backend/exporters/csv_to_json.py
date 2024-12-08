@@ -1,5 +1,4 @@
 # src/exporters/csv_to_json.py
-from config import logger
 
 
 class CSVtoJSONExporter:
@@ -12,13 +11,14 @@ class CSVtoJSONExporter:
     Methods:
         export(output_file): Exporte le dataframe en fichier JSON.
     """
-    def __init__(self, dataframe):
+    def __init__(self, logger, dataframe):
         """
         Initialise le CSVtoJSONExporter avec le dataframe.
 
         Args:
             dataframe (pandas.DataFrame): Le dataframe à exporter.
         """
+        self.logger = logger
         self.dataframe = dataframe
 
     def export(self, output_file):
@@ -33,8 +33,8 @@ class CSVtoJSONExporter:
         """
         try:
             self.dataframe.to_json(output_file, orient='records', lines=True)
-            logger.info(f"Data exported to JSON at {output_file}")
+            self.logger.info(f"Data exported to JSON at {output_file}")
             return True, f"Data exported to JSON at {output_file}"
         except Exception as e:
-            logger.error(f"Error exporting to JSON: {e}")
+            self.logger.error(f"Error exporting to JSON: {e}")
             return False, f"Error exporting to JSON: {e}"

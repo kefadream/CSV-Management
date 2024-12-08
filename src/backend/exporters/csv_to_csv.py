@@ -1,4 +1,4 @@
-from config import logger
+
 
 class CSVtoCSVExporter:
     """
@@ -10,13 +10,15 @@ class CSVtoCSVExporter:
     Methods:
         export(output_file): Exporte le dataframe en fichier CSV.
     """
-    def __init__(self, dataframe):
+    def __init__(self, logger, dataframe):
         """
         Initialise le CSVtoCSVExporter avec le dataframe.
 
         Args:
             dataframe (pandas.DataFrame): Le dataframe à exporter.
+
         """
+        self.logger = logger
         self.dataframe = dataframe
 
     def export(self, output_file):
@@ -31,8 +33,8 @@ class CSVtoCSVExporter:
         """
         try:
             self.dataframe.to_csv(output_file, index=False)
-            logger.info(f"Data exported to CSV at {output_file}")
+            self.logger.info(f"Data exported to CSV at {output_file}")
             return True, f"Data exported to CSV at {output_file}"
         except Exception as e:
-            logger.error(f"Error exporting to CSV: {e}")
+            self.logger.error(f"Error exporting to CSV: {e}")
             return False, f"Error exporting to CSV: {e}"

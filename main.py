@@ -1,5 +1,5 @@
 import tkinter as tk
-from src.ui.main_window import MainWindow
+from src.frontend.main_window import MainWindow
 
 
 def main():
@@ -10,4 +10,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

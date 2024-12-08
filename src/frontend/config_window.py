@@ -1,7 +1,7 @@
 # src/ui/config_window.py
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from config import CONFIG, logger
+from ..backend import CONFIG, logger
 import json
 
 

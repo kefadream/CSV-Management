@@ -3,12 +3,9 @@ from tkinter import filedialog, messagebox, simpledialog
 import json
 import os
 import tkinter as tk
-from config import CONFIG, logger
-from src.core import CSVProcessor, DataManager, DataStorage, ColumnSelector
-from src.exporters import CSVtoJSONExporter, CSVtoTextExporter, CSVtoCSVExporter
-from src.ui.widgets import ActionsFrame, DataManagementFrame, ExportOptionsFrame, ConsoleFrame, ProgressBarFrame
-from src.ui.dialogs import show_column_selection_dialog, TextInputDialog, show_rename_columns_dialog
-from src.ui.images import load_all_images
+from ..backend import *
+from ..frontend import *
+
 
 
 class CSVApp:
@@ -112,7 +109,7 @@ class CSVApp:
         self.log_message("Processing selected CSV files...")
 
         processor = CSVProcessor()
-        csv_info = processor.extract_csv_info(self.files)
+        csv_info = processor.extract_csv_info(logger, self.files)
         self.display_csv_info(csv_info)
         self.log_message("CSV information extracted.")
 
@@ -156,7 +153,7 @@ class CSVApp:
         output_file = filedialog.asksaveasfilename(initialdir=self.output_directory.get(), defaultextension=".json",
                                                    filetypes=[("JSON files", "*.json")])
         if output_file:
-            exporter = CSVtoJSONExporter(self.dataframe)
+            exporter = CSVtoJSONExporter(logger, self.dataframe)
             success, message = exporter.export(output_file)
             if success:
                 messagebox.showinfo("Success", message)
@@ -174,7 +171,7 @@ class CSVApp:
         output_file = filedialog.asksaveasfilename(initialdir=self.output_directory.get(), defaultextension=".txt",
                                                    filetypes=[("Text files", "*.txt")])
         if output_file:
-            exporter = CSVtoTextExporter(self.dataframe)
+            exporter = CSVtoTextExporter(logger, self.dataframe)
             success, message = exporter.export(output_file)
             if success:
                 messagebox.showinfo("Success", message)
@@ -192,7 +189,7 @@ class CSVApp:
         output_file = filedialog.asksaveasfilename(initialdir=self.output_directory.get(), defaultextension=".csv",
                                                    filetypes=[("CSV files", "*.csv")])
         if output_file:
-            exporter = CSVtoCSVExporter(self.dataframe)
+            exporter = CSVtoCSVExporter(logger, self.dataframe)
             success, message = exporter.export(output_file)
             if success:
                 messagebox.showinfo("Success", message)
@@ -208,7 +205,8 @@ class CSVApp:
             return
 
         columns = list(self.dataframe.columns)
-        selected_columns = show_column_selection_dialog(self.root, columns)
+        dialog = ColumnSelectionDialog(self.root, columns)
+        selected_columns = dialog.show()  # On récupère la sélection via la méthode show()
         if selected_columns:
             manager = DataManager(self.dataframe)
             self.dataframe = manager.remove_columns(selected_columns)
@@ -222,13 +220,15 @@ class CSVApp:
             self.log_message("Error: No data available to filter.")
             return
 
-        column = TextInputDialog(self.root, "Filter Data", "Enter column name to filter by:").user_input
+        dialog_column = TextInputDialog(self.root, "Filter Data", "Enter column name to filter by:")
+        column = dialog_column.user_input
         if column not in self.dataframe.columns:
             messagebox.showerror("Error", f"Invalid column name: {column}")
             self.log_message(f"Error: Invalid column name: {column}")
             return
 
-        value = TextInputDialog(self.root, "Filter Data", f"Enter value to filter {column} by:").user_input
+        dialog_value = TextInputDialog(self.root, "Filter Data", f"Enter value to filter {column} by:")
+        value = dialog_value.user_input
         if column and value:
             manager = DataManager(self.dataframe)
             self.dataframe = manager.filter_data(column, value)
@@ -243,13 +243,15 @@ class CSVApp:
             return
 
         row = simpledialog.askinteger("Edit Data", "Enter row index to edit:")
-        column = TextInputDialog(self.root, "Edit Data", "Enter column name to edit:").user_input
+        dialog_column = TextInputDialog(self.root, "Edit Data", "Enter column name to edit:")
+        column = dialog_column.user_input
         if column not in self.dataframe.columns:
             messagebox.showerror("Error", f"Invalid column name: {column}")
             self.log_message(f"Error: Invalid column name: {column}")
             return
 
-        new_value = TextInputDialog(self.root, "Edit Data", "Enter new value:").user_input
+        dialog_new_value = TextInputDialog(self.root, "Edit Data", "Enter new value:")
+        new_value = dialog_new_value.user_input
         if row is not None and column and new_value:
             manager = DataManager(self.dataframe)
             self.dataframe = manager.edit_cell(row, column, new_value)
@@ -282,7 +284,8 @@ class CSVApp:
             self.log_message("Error: No data available to sort.")
             return
 
-        column = TextInputDialog(self.root, "Sort Data", "Enter column name to sort by:").user_input
+        dialog_column = TextInputDialog(self.root, "Sort Data", "Enter column name to sort by:")
+        column = dialog_column.user_input
         if column and column in self.dataframe.columns:
             self.dataframe = self.dataframe.sort_values(by=column)
             self.display_csv_info(self.dataframe.to_string())
@@ -299,7 +302,8 @@ class CSVApp:
             return
 
         columns = list(self.dataframe.columns)
-        columns_map = show_rename_columns_dialog(self.root, columns)
+        dialog = RenameColumnsDialog(self.root, columns)
+        columns_map = dialog.show()  # On récupère le mapping des nouveaux noms
         if columns_map:
             manager = DataManager(self.dataframe)
             self.dataframe = manager.rename_columns(columns_map)
@@ -322,7 +326,6 @@ class CSVApp:
         self.display_csv_info(self.dataframe.to_string())
         messagebox.showinfo("Success", "Missing data imputed successfully.")
         self.log_message("Missing data imputed successfully.")
-
 
 # Exemple d'utilisation
 if __name__ == "__main__":

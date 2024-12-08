@@ -1,7 +1,8 @@
 from .utils import read_file, select_columns, filter_columns
 from .data_storage import DataStorage
-from config import logger
+
 import pandas as pd
+
 
 class CSVProcessor:
     """
@@ -12,7 +13,7 @@ class CSVProcessor:
         read_files(files): Lit les fichiers CSV et retourne une liste de dataframes.
         process_files(files, output_directory, default_file_name): Traite les fichiers CSV, sélectionne les colonnes, fusionne les dataframes et stocke le résultat.
     """
-    def extract_csv_info(self, files):
+    def extract_csv_info(self, logger, files):
         """
         Extrait des informations sur les fichiers CSV.
 
@@ -22,6 +23,7 @@ class CSVProcessor:
         Returns:
             str: Informations sur les fichiers CSV.
         """
+        self.logger = logger
         info = ""
         for file in files:
             try:
@@ -55,7 +57,7 @@ class CSVProcessor:
         dataframes = self.read_files(files)
 
         if not dataframes:
-            logger.error("No dataframes to process")
+            self.logger.error("No dataframes to process")
             return
 
         selected_columns = select_columns(dataframes)
@@ -68,4 +70,4 @@ class CSVProcessor:
             data_storage = DataStorage()
             data_storage.store_data(cleaned_dataframe, default_file_name)
         else:
-            logger.error("Merging dataframes failed")
+            self.logger.error("Merging dataframes failed")

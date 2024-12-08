@@ -1,6 +1,6 @@
 # src/ui/main_window.py
 import tkinter as tk
-from src.ui.app import CSVApp
+from .app import CSVApp
 
 class MainWindow:
     def __init__(self, root):
@@ -27,7 +27,7 @@ class MainWindow:
         self.csv_app.select_files()
 
     def open_config(self):
-        from src.ui.config_window import ConfigWindow
+        from .config_window import ConfigWindow
         config_window = tk.Toplevel(self.root)
         ConfigWindow(config_window)
 

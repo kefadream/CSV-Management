@@ -3,7 +3,7 @@ import logging
 import os
 
 # Définir le chemin du fichier de configuration
-CONFIG_FILE = 'config.json'
+CONFIG_FILE = 'data/config.json'
 
 # Valeurs par défaut de la configuration
 default_config = {
@@ -23,6 +23,6 @@ with open(CONFIG_FILE, 'r') as f:
 # Configuration du journal
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler('csv_management.log'), logging.StreamHandler()])
+                    handlers=[logging.FileHandler('data/csv_management.log'), logging.StreamHandler()])
 
 logger = logging.getLogger(__name__)

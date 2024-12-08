@@ -1,16 +1,18 @@
 import pandas as pd
-from config import logger
 
-def read_file(file_path):
+def read_file(logger, file_path):
     """
     Lit un fichier CSV et retourne un dataframe.
 
     Args:
+        logger (): fonction de logger
         file_path (str): Le chemin du fichier CSV.
 
     Returns:
         pandas.DataFrame: Le dataframe lu.
     """
+
+
     try:
         df = pd.read_csv(file_path)
         logger.info(f"Read file: {file_path}")
@@ -23,7 +25,7 @@ def read_file(file_path):
         logger.error(f"Unexpected error reading file {file_path}: {e}")
     return None
 
-def select_columns(dataframes):
+def select_columns(logger, dataframes):
     """
     Sélectionne toutes les colonnes uniques des dataframes.
 
@@ -40,7 +42,7 @@ def select_columns(dataframes):
     logger.info(f"Selected columns: {selected_columns}")
     return selected_columns
 
-def filter_columns(dataframes, selected_columns):
+def filter_columns(logger, dataframes, selected_columns):
     """
     Filtre les dataframes pour ne garder que les colonnes sélectionnées.
 

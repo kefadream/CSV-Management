@@ -1,6 +1,4 @@
 # src/exporters/csv_to_txt.py
-from config import logger
-
 
 class CSVtoTextExporter:
     """
@@ -12,13 +10,14 @@ class CSVtoTextExporter:
     Methods:
         export(output_file): Exporte le dataframe en fichier texte.
     """
-    def __init__(self, dataframe):
+    def __init__(self, logger, dataframe):
         """
         Initialise le CSVtoTextExporter avec le dataframe.
 
         Args:
             dataframe (pandas.DataFrame): Le dataframe à exporter.
         """
+        self.logger = logger
         self.dataframe = dataframe
 
     def export(self, output_file):
@@ -33,8 +32,8 @@ class CSVtoTextExporter:
         """
         try:
             self.dataframe.to_csv(output_file, index=False, sep='\t')
-            logger.info(f"Data exported to text at {output_file}")
+            self.logger.info(f"Data exported to text at {output_file}")
             return True, f"Data exported to text at {output_file}"
         except Exception as e:
-            logger.error(f"Error exporting to text: {e}")
+            self.logger.error(f"Error exporting to text: {e}")
             return False, f"Error exporting to text: {e}"

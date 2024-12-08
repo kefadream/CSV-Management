@@ -1,5 +1,5 @@
 # src/core/column_selector.py
-from config import logger
+from .config import logger
 
 
 class ColumnSelector:
